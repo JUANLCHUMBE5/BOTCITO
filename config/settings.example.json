@@ -1,0 +1,100 @@
+{
+  "exchange": "kraken",
+  "symbol": "XRP/USDT",
+  "low_probability_no_trade_threshold": 45.0,
+  "low_probability_zone_threshold": 45.0,
+  "timeframe": "1m",
+  "poll_interval_seconds": 20,
+  "trading_mode": "paper",
+  "binance_testnet": false,
+  "database_path": "data/trading_bot.db",
+  "log_path": "logs/bot.log",
+  "accounts": [
+    {
+      "env_prefix": "KRAKEN_ACCOUNT_1",
+      "trade_amount_usdt": 25.0,
+      "paper_balance_usdt": 1000.0,
+      "enabled": true
+    },
+    {
+      "env_prefix": "KRAKEN_ACCOUNT_2",
+      "trade_amount_usdt": 25.0,
+      "paper_balance_usdt": 1000.0,
+      "enabled": true
+    }
+  ],
+  "strategy": {
+    "take_profit_pct": 0.02,
+    "stop_loss_pct": 0.01,
+    "volume_spike_factor": 1.2,
+    "momentum_threshold": 0.0025,
+    "rsi_buy_min": 50,
+    "rsi_buy_max": 68,
+    "breakout_lookback": 20,
+    "max_candle_pct": 0.012,
+    "max_distance_from_ema20_pct": 0.02,
+    "min_atr_pct": 0.0015,
+    "require_breakout": true,
+    "leverage_min": 2.0,
+    "leverage_mid": 2.0,
+    "leverage_max": 3.0,
+    "leverage_cap": 3.0,
+    "leverage_mid_score": 75.0,
+    "leverage_high_score": 88.0,
+    "maintenance_margin_pct": 0.12,
+    "pre_liquidation_buffer_pct": 0.03,
+    "open_fee_rate": 0.0002,
+    "funding_fee_rate_per_4h": 0.0,
+    "trailing_activation_pct": 0.01,
+    "trailing_distance_pct": 0.006,
+    "trailing_profit_giveback_ratio": 0.2,
+    "support_break_min_profit_pct": 0.004,
+    "breakeven_trigger_pct": 0.008,
+    "atr_stop_loss_multiplier": 1.8,
+    "atr_take_profit_multiplier": 2.8,
+    "circuit_breaker_daily_loss_pct": 0.05,
+    "circuit_breaker_daily_loss_usd": 0.0,
+    "max_simultaneous_positions": 1,
+    "god_candle_volume_multiplier": 3.0,
+    "take_profit_ladder": [
+      {
+        "target_pct": 0.05,
+        "close_ratio": 0.3
+      },
+      {
+        "target_pct": 0.1,
+        "close_ratio": 0.4
+      }
+    ],
+    "rebound_enabled": true,
+    "rebound_trend_strength_ratio": 0.997,
+    "rebound_rsi_min": 38,
+    "rebound_rsi_max": 58,
+    "rebound_volume_ratio_min": 0.75,
+    "rebound_min_atr_pct": 0.00025,
+    "rebound_max_distance_from_ema20_pct": 0.012,
+    "rebound_macd_threshold": -0.0006
+  },
+  "telegram": {
+    "enabled": false,
+    "notify_startup": true,
+    "notify_errors": true,
+    "notify_buys": true,
+    "notify_sells": true,
+    "notify_news_blocks": true,
+    "notify_status_summary": true,
+    "status_interval_minutes": 30
+  },
+  "news": {
+    "enabled": false,
+    "provider": "newsapi",
+    "query": "\"XRP\" OR \"Ripple\" OR \"Ripple Labs\" OR \"Ripple SEC\" OR \"XRP ETF\"",
+    "language": "en",
+    "country": "us",
+    "check_interval_minutes": 15,
+    "max_headlines": 5,
+    "block_on_negative_news": false,
+    "negative_threshold": -0.35,
+    "notify_headlines": true
+  }
+}

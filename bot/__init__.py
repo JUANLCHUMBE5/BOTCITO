@@ -1,0 +1,1 @@
+"""XRP trading bot package."""

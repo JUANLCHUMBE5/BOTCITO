@@ -1,0 +1,18 @@
+[Unit]
+Description=XRP Trading Bot
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/xrp-trading-bot
+EnvironmentFile=/home/ubuntu/xrp-trading-bot/.env
+ExecStart=/home/ubuntu/xrp-trading-bot/.venv/bin/python /home/ubuntu/xrp-trading-bot/main.py
+Restart=always
+RestartSec=10
+KillSignal=SIGINT
+TimeoutStopSec=30
+StandardOutput=append:/home/ubuntu/xrp-trading-bot/logs/systemd-bot.log
+StandardError=append:/home/ubuntu/xrp-trading-bot/logs/systemd-bot-error.log
+
+[Install]
+WantedBy=multi-user.target

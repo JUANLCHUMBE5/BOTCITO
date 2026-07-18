@@ -1,0 +1,18 @@
+[Unit]
+Description=XRP Trading Bot Watchdog
+After=network.target xrp-bot.service
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/xrp-trading-bot
+EnvironmentFile=/home/ubuntu/xrp-trading-bot/.env
+ExecStart=/home/ubuntu/xrp-trading-bot/.venv/bin/python /home/ubuntu/xrp-trading-bot/watchdog.py
+Restart=always
+RestartSec=15
+KillSignal=SIGINT
+TimeoutStopSec=15
+StandardOutput=append:/home/ubuntu/xrp-trading-bot/logs/systemd-watchdog.log
+StandardError=append:/home/ubuntu/xrp-trading-bot/logs/systemd-watchdog-error.log
+
+[Install]
+WantedBy=multi-user.target
