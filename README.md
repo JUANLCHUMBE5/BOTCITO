@@ -1,47 +1,20 @@
-# Bot de trading XRP con Python, AWS y Kraken
+# 🤖 Algorithmic Trading Bot & Decision Engine (XRP/USDT)
 
-## 🛠️ Resumen del Trabajo Realizado en este Proyecto
-
-En este proyecto se ha desarrollado un robusto sistema automatizado de trading cuantitativo para **XRP** (escalable a otros instrumentos como CFD de Forex/Oro) diseñado para ejecutarse 24/7 en servidores en la nube (AWS EC2). A continuación se detallan las áreas principales desarrolladas y optimizadas:
-
-1. **Arquitectura Multicuenta y Multihilo Asíncrona (`bot/trader.py` y `main.py`)**:
-   - Soporte para operar múltiples cuentas de manera independiente y en paralelo usando hilos dedicados.
-   - Aislamiento de fallos: si una cuenta experimenta problemas de red o de API, el resto de las cuentas continúa operando sin afectarse.
-   - Sincronización thread-safe del estado de las posiciones, snapshots de saldo y control global.
-
-2. **Estrategia Cuantitativa de Scalping (`bot/strategy.py` e `indicators.py`)**:
-   - Operaciones dinámicas en timeframes de 5m con un intervalo de monitoreo en tiempo real de 10s.
-   - Cálculo e integración de múltiples indicadores técnicos: EMAs (20, 50, 200), RSI, MACD, Average True Range (ATR) y Breakouts.
-   - Detección de anomalías en el volumen mediante factores RVOL y picos dinámicos ("god candles").
-
-3. **Motor de Filtro de Decisión con IA Local (`bot/ai_filter.py`)**:
-   - Sistema de puntuación (scoring) local de 0 a 100 y niveles de confianza ("alta", "media", "baja") para evaluar la probabilidad de éxito de cada señal.
-   - Permite filtrar y denegar operaciones dudosas basadas en el comportamiento histórico sin la necesidad de consultar APIs externas de pago.
-
-4. **Gestión Profesional del Riesgo**:
-   - **Take Profit Escalonado (Laddering)**: Cierres parciales programados por tramos de beneficio.
-   - **Trailing Stop Loss Activo**: Ajuste dinámico de protección de ganancias a medida que el precio se mueve a favor.
-   - **Stop Loss basado en ATR**: Adaptabilidad a la volatilidad del mercado en cada ciclo.
-   - **Circuit Breaker Diario**: Bloqueo automático del bot si se alcanza un porcentaje de pérdida diaria o un límite nominal especificado.
-   - **Cooldowns Inteligentes**: Pausas obligatorias de trading tras ganancias o pérdidas para evitar sesgos emocionales del bot (overtrading).
-
-5. **Panel de Notificaciones y Control Remoto vía Telegram (`bot/notifier.py`)**:
-   - Notificaciones push en tiempo real de arranques, compras, ventas, errores y circuit breakers.
-   - Reportes periódicos programables con balances consolidados en USDT y la divisa local (calculados dinámicamente).
-   - Comandos interactivos remotos desde Telegram (`/status`, `/pnl`, `/stop`, `/resume`, `/close`, `/settings`) para control manual completo y configuración de perfiles (agresivo/conservador) al vuelo.
-
-6. **Filtro de Sentimiento de Noticias (`bot/news_service.py`)**:
-   - Integración con NewsAPI para monitorear titulares del mercado de criptomonedas y pausar automáticamente el trading ante eventos periodísticos con alta polaridad negativa.
-
-7. **Base de Datos y Herramientas de Datos (`bot/storage.py` y `backfill_xrp_history.py`)**:
-   - SQLite como motor de persistencia local rápido y liviano para auditar precios, ejecuciones, balances e histórico de mercado.
-   - Script de backfilling para descargar y almacenar velas históricas directamente en la nube.
-
-8. **Deployment Automático y Portabilidad (`deploy/`)**:
-   - Integración como servicio de Linux (`systemd`) y script de watchdog para levantar el proceso de manera automática si se cae.
-   - Script PowerShell (`package_release.ps1`) para empaquetar de forma automática versiones portables listas para migrar a cualquier otro servidor Ubuntu manteniendo el estado de la base de datos y configuración (.env).
+Este es un proyecto de **Trading Algorítmico y Cuantitativo** desarrollado en Python para la ejecución autónoma de estrategias de scalping en mercados de criptomonedas y CFDs. Diseñado para funcionar 24/7 en la nube (AWS EC2) bajo un enfoque profesional de concurrencia, gestión estricta del riesgo y control remoto en tiempo real.
 
 ---
+
+### 🚀 Aspectos Clave del Proyecto (CV & Portfolio)
+
+*   **Arquitectura Concurrente Multihilo:** Operación paralela y aislada de múltiples cuentas usando `threading`. Si una cuenta experimenta fallas de API o red, las demás continúan operando sin interrupción.
+*   **Filtro de Decisión Cuantitativo (IA Local):** Módulo predictivo local (`bot/ai_filter.py`) que evalúa el histórico y múltiples indicadores técnicos para generar un Score de Confianza (0-100%) antes de autorizar entradas al mercado.
+*   **Gestión Estricta del Riesgo:** Implementación de Trailing Stop Loss, Take Profit escalonado (laddering), Stop Loss dinámico adaptado a la volatilidad real (ATR) y *Circuit Breakers* automáticos por pérdida máxima diaria.
+*   **Filtro de Sentimiento de Noticias:** Integración en tiempo real con NewsAPI para bloquear transacciones automáticamente ante noticias con polaridad negativa en el ecosistema.
+*   **Control y Alertas vía Telegram:** Panel bidireccional interactivo. Envía reportes dinámicos de PnL y estado del bot al móvil, y permite control manual completo (pausar, reanudar, forzar cierres, cambiar perfiles de riesgo) con comandos como `/status` o `/settings`.
+*   **Despliegue y Resiliencia (Ops):** Configuración como demonio de Linux (`systemd`), servicio watchdog autónomo de auto-recuperación ante caídas de proceso, y scripts de empaquetado portable (`package_release.ps1`) para fácil migración entre servidores EC2.
+
+---
+
 
 Este proyecto es una base funcional para correr un bot de **XRP/USDT** con dos cuentas al mismo tiempo, usando:
 
